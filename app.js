@@ -3,13 +3,10 @@ const cxt = canvas.getContext("2d");  //context는 캔버스에 그림을 그릴
 canvas.width = 800;
 canvas.height = 800;  //css에서 캔버스 크기 설정 후 js에도 작성해줌(이후에는 js에서만 수정할 것임)
 
-cxt.rect(50, 50, 100, 100); //사각형 선 그리기(선의 색이 적용되지 않아 보이지 않음)
-cxt.rect(150, 150, 100, 100);
-cxt.rect(250, 250, 100, 100);
-cxt.fill(); //색 채우기
-
-cxt.beginPath(); //이전 경로와 단절하고 새 경로 시작(끊어가기 원할 때 사용)
-cxt.rect(350, 350, 100, 100);
-cxt.rect(450, 450, 100, 100);
-cxt.fillStyle = "red";
+cxt.moveTo(50, 50); //선을 긋지 않고 연필(좌표)을 이동시킴
+cxt.lineTo(150, 50);  //선을 그으면서 연필을 이동시킴
+cxt.lineTo(150, 150); //수평인 직선을 그으려면 두 y값이 같아야함
+cxt.lineTo(50, 150);  //라인이 끝난 지점이 다음에 시작하는 브러쉬 좌표임
+cxt.lineTo(50, 50); //fillReact = fill + Rect = fill + (moveTo + lineTo)
 cxt.fill();
+cxt.stroke();
