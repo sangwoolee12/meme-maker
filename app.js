@@ -1,8 +1,9 @@
+const fileInput = document.getElementById("file");
 const modeBtn = document.getElementById("mode-btn");
 const destroyBtn = document.getElementById("destroy-btn");
 const eraserBtn = document.getElementById("eraser-btn");
 const colorOptions = Array.from(
-  document.getElementsByClassName("color-option") //HTMLCollection이므로 배열로 만들어줌
+  document.getElementsByClassName("color-option") //forEach문 사용하기 위해 HTMLCollection을 배열로 만들어줌
 );
 const color = document.getElementById("color");
 const lineWidth = document.getElementById("line-width");
@@ -44,16 +45,17 @@ function onLineWidthChange(event) {
 }
 function onColorChange(event) {
   //색상 바꾸는 함수
-  ctx.strokeStyle = event.target.value;
-  ctx.fillStyle = event.target.value;
+  ctx.strokeStyle = event.target.value; //라인 색깔 변경해줌
+  ctx.fillStyle = event.target.value; //채우기 색깔 변경해줌
 }
 function onColorClick(event) {
   const colorValue = event.target.dataset.color;
   ctx.strokeStyle = colorValue;
   ctx.fillStyle = colorValue;
-  color.value = colorValue;
+  color.value = colorValue; //사용자가 현재 클릭한 색깔을 알려주기 위함
 }
 function onModeClick() {
+  //Fill 또는 Draw 모드 변경 함수
   if (isFilling) {
     isFilling = false;
     modeBtn.innerText = "Fill";
@@ -63,6 +65,7 @@ function onModeClick() {
   }
 }
 function onCanvasClick() {
+  //캔버스 색 채우기 함수
   if (isFilling) {
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
@@ -78,11 +81,21 @@ function onEraserClick() {
   isFilling = false;
   modeBtn.innerText = "Fill";
 }
+function onFileChange(event) {
+  const file = event.target.files[0]; //js를 이용해서 파일을 가져옴
+  const url = URL.createObjectURL(file); //그 파일을 가리키는 url을 얻음
+  const image = new Image();
+  image.src = url;
+  image.onload = function () {
+    ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    fileInput.value = null; //파일 선택 리셋하는 용도
+  };
+}
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting); //커서가 캔버스 이탈시 그리기 중단
-canvas.addEventListener("click", onCanvasClick);
+canvas.addEventListener("click", onCanvasClick); //click = mousedown + mouseup
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
 
@@ -91,3 +104,4 @@ colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 modeBtn.addEventListener("click", onModeClick);
 destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
+fileInput.addEventListener("change", onFileChange);
