@@ -3,26 +3,29 @@ const ctx = canvas.getContext("2d"); //context는 캔버스에 그림을 그릴 
 canvas.width = 800;
 canvas.height = 800; //css에서 캔버스 크기 설정 후 js에도 작성해줌(이후에는 js에서만 수정할 것임)
 ctx.lineWidth = 2;
+let isPainting = false;
 
-const colors = [
-  "#ff3838",
-  "#ffb8b8",
-  "#c56cf0",
-  "#ff9f1a",
-  "#fff200",
-  "#32ff7e",
-  "#7efff5",
-  "#18dcff",
-  "#7d5fff",
-];
-
-function onClick(event) {
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  ctx.strokeStyle = color;
-  ctx.lineTo(event.offsetX, event.offsetY);
-  ctx.stroke();
+function onMove(event) {
+  //마우스 커서 움직임에 따라 연필이 이동하는 함수
+  if (isPainting) {
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    return;
+  }
+  ctx.moveTo(event.offsetX, event.offsetY);
 }
 
-canvas.addEventListener("mousemove", onClick);
+function startPainting() {
+  //마우스 클릭상태 유지시 선이 그려지는 함수
+  isPainting = true;
+}
+
+function cancelPainting() {
+  //마우스 클릭상태 해제시 그리기 중단 함수
+  isPainting = false;
+}
+
+canvas.addEventListener("mousemove", onMove);
+canvas.addEventListener("mousedown", startPainting);
+canvas.addEventListener("mouseup", cancelPainting);
+canvas.addEventListener("mouseleave", cancelPainting); //커서가 캔버스 이탈시 그리기 중단
