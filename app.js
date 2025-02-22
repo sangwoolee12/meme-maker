@@ -1,3 +1,4 @@
+const color = document.getElementById("color");
 const lineWidth = document.getElementById("line-width");
 const canvas = document.querySelector("canvas"); //js로 canvas 불러오기
 const ctx = canvas.getContext("2d"); //context는 캔버스에 그림을 그릴 떄 사용하는 붓
@@ -30,10 +31,15 @@ function onLineWidthChange(event) {
   //굵기 바꾸는 함수
   ctx.lineWidth = event.target.value;
 }
-
+function onColorChange(event) {
+  //색상 바꾸는 함수
+  ctx.strokeStyle = event.target.value;
+  ctx.fillStyle = event.target.value;
+}
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting); //커서가 캔버스 이탈시 그리기 중단
 
 lineWidth.addEventListener("change", onLineWidthChange);
+color.addEventListener("change", onColorChange);
