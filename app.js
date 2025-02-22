@@ -1,3 +1,4 @@
+const textInput = document.getElementById("text");
 const fileInput = document.getElementById("file");
 const modeBtn = document.getElementById("mode-btn");
 const destroyBtn = document.getElementById("destroy-btn");
@@ -16,6 +17,7 @@ const CANVAS_HEIGHT = 800;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT; //css에서 캔버스 크기 설정 후 js에도 작성해줌(이후에는 js에서만 수정할 것임)
 ctx.lineWidth = lineWidth.value; //굵기 초기값 5 주겠다는 의미
+ctx.lineCap = "round";
 let isPainting = false;
 let isFilling = false;
 
@@ -91,6 +93,17 @@ function onFileChange(event) {
     fileInput.value = null; //파일 선택 리셋하는 용도
   };
 }
+function onDoubleClick(event) {
+  const text = textInput.value;
+  if (text !== "") {
+    ctx.save(); //ctx의 현재 상태, 색상, 스타일 등을 저장함
+    ctx.lineWidth = 1;
+    ctx.font = "68px serif";
+    ctx.fillText(text, event.offsetX, event.offsetY); //이 사이에서는 ctx 수정 가능
+    ctx.restore(); //저장해둔 버전으로 되돌림
+  }
+}
+canvas.addEventListener("dblclick", onDoubleClick);
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
