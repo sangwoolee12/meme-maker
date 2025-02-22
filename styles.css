@@ -4,7 +4,7 @@ canvas {
   border: 5px solid black;
 }
 
-body{
+body {
   display: flex;
   justify-content: center;
   align-items: center;
