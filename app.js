@@ -99,17 +99,17 @@ function onDoubleClick(event) {
   if (text !== "") {
     ctx.save(); //ctx의 현재 상태, 색상, 스타일 등을 저장함
     ctx.lineWidth = 1;
-    ctx.font = "68px serif";
+    ctx.font = "68px sans-serif";
     ctx.fillText(text, event.offsetX, event.offsetY); //이 사이에서는 ctx 수정 가능
     ctx.restore(); //저장해둔 버전으로 되돌림
   }
 }
 function onSaveClick() {
-  const url = canvas.toDataURL();
+  const url = canvas.toDataURL(); //canvas에 있는 그림 데이터를 URL로 변환해주는 메소드
   const a = document.createElement("a");
   a.href = url;
-  a.download = "myDrawing.png";
-  a.click();
+  a.download = "myDrawing.png"; //브라우저에게 href에 있는 콘텐츠를 다운로드하라고 알리는 역할
+  a.click(); //가짜로 a태그 클릭
 }
 
 canvas.addEventListener("dblclick", onDoubleClick);
